@@ -8,6 +8,9 @@ import org.testng.annotations.Test;
 import utils.ApiConstants;
 import utils.Endpoints;
 
+import java.sql.ResultSet;
+import java.util.Map;
+
 public class GetOrderTest {
 
     @Test
@@ -27,5 +30,18 @@ public class GetOrderTest {
         System.out.println("shipDate: " + order.getShipDate());
         System.out.println("status: " + order.getStatus());
         System.out.println("complete: " + order.getComplete());
+    }
+
+    @Test
+    public void getStoreInventory(){
+        Response response = RestAssured
+                .given()
+                .baseUri(ApiConstants.BASE_URL)
+                .contentType(ApiConstants.CONTENT_TYPE)
+                .when()
+                .get(Endpoints.STORE_INVENTORY);
+
+        Map<String, Integer> inventory = response.jsonPath().getMap("");
+        System.out.println(inventory);
     }
 }
