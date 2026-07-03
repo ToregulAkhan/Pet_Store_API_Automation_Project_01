@@ -42,4 +42,21 @@ public class CreatePetTest {
                     .body("status", equalTo("available"));
 
     }
+
+    @Test
+    public void postPetId(){
+        RestAssured
+                .given()
+                    .baseUri(ApiConstants.BASE_URL)
+                    .contentType(ApiConstants.CONTENT_TYPE)
+                    .pathParam("petId", 10)
+                    .queryParam("name", "doggie")
+                    .queryParam("status", "available")
+                .when()
+                    .post(Endpoints.PET_BY_ID)
+                .then()
+                    .statusCode(200)
+                    .log().status()
+                    .log().body();
+    }
 }
