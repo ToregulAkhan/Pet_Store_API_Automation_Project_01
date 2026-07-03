@@ -36,6 +36,7 @@ public class GetPetTest {
         List<Pet> pets = response.jsonPath().getList("", Pet.class);
         Pet pet = pets.get(0);
         System.out.println(pet.getName() + "it is get name");
+        System.out.println("------------------------------------------------------------------");
 
     }
 
@@ -49,11 +50,32 @@ public class GetPetTest {
                 .when()
                 .get(Endpoints.PET_FIND_BY_TAGS);
 
-        response.then().statusCode(200);
+        response.then().statusCode(200)
+                .log().status();
 
         List<Pet> pets = response.jsonPath().getList("", Pet.class);
         Pet pet = pets.get(0);
         System.out.println("id: " + pet.getTags().get(0).getId());
         System.out.println("name: " + pet.getTags().get(0).getName());
+        System.out.println("------------------------------------------------------------------");
+    }
+
+    @Test
+    public void getPetById(){
+        Response response= RestAssured
+                .given()
+                .baseUri(ApiConstants.BASE_URL)
+                .contentType(ApiConstants.CONTENT_TYPE)
+                .pathParams("petId", 10)
+                .when()
+                .get(Endpoints.PET_BY_ID);
+
+        response.then().statusCode(200)
+                .log().status()
+                .log().body();
+
+        Pet pets = response.jsonPath().getObject("", Pet.class);
+        System.out.println("------------------------------------------------------------------");
+
     }
 }
