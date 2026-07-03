@@ -38,4 +38,22 @@ public class GetPetTest {
         System.out.println(pet.getName() + "it is get name");
 
     }
+
+    @Test
+    public void getFindByTags(){
+        Response response = RestAssured
+                .given()
+                .baseUri(ApiConstants.BASE_URL)
+                .contentType(ApiConstants.CONTENT_TYPE)
+                .queryParam("tags", "tag1", "tag2", "tag3")
+                .when()
+                .get(Endpoints.PET_FIND_BY_TAGS);
+
+        response.then().statusCode(200);
+
+        List<Pet> pets = response.jsonPath().getList("", Pet.class);
+        Pet pet = pets.get(0);
+        System.out.println("id: " + pet.getTags().get(0).getId());
+        System.out.println("name: " + pet.getTags().get(0).getName());
+    }
 }

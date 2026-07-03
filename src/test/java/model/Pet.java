@@ -10,6 +10,8 @@ public class Pet {
     public List<Tag> tags;
     public String status;
 
+    public Pet(){}
+
     public Pet(int id, String name, Category category, List<String> photoUrls, List<Tag> tags, String status) {
         this.id = id;
         this.name = name;
@@ -18,8 +20,6 @@ public class Pet {
         this.tags = tags;
         this.status = status;
     }
-
-    public Pet(){}
 
     public int getId() {
         return id;
