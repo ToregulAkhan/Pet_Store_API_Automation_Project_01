@@ -1,8 +1,10 @@
 package tests.pet;
 
 import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import model.Pet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -10,23 +12,30 @@ import org.testng.annotations.Test;
 import utils.ApiConstants;
 import utils.Endpoints;
 
+import java.util.List;
+
 public class GetPetTest {
 
     private static final Logger log = LoggerFactory.getLogger(GetPetTest.class);
 
     @Test
     public void getFindByStatus(){
-        RestAssured
+        Response response = RestAssured
                 .given()
                     .baseUri(ApiConstants.BASE_URL)
                     .contentType(ApiConstants.CONTENT_TYPE)
                     .queryParam("status", "sold")
                 .when()
-                    .get(Endpoints.PET_FIND_BY_STATUS)
-                .then()
-                    .statusCode(200)
-                    .log().status()
-                    .log().body();
+                    .get(Endpoints.PET_FIND_BY_STATUS);
+
+        response.then().statusCode(200)
+                .log().status()
+                .log().body();
+
+        //List<Pet> pets = response.as(new TypeRef<List<Pet>>() {});
+        List<Pet> pets = response.jsonPath().getList("", Pet.class);
+        Pet pet = pets.get(0);
+        System.out.println(pet.getName() + "it is get name");
 
     }
 }
