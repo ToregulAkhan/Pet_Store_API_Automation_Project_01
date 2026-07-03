@@ -13,6 +13,7 @@ import utils.Endpoints;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +55,22 @@ public class CreatePetTest {
                     .queryParam("status", "available")
                 .when()
                     .post(Endpoints.PET_BY_ID)
+                .then()
+                    .statusCode(200)
+                    .log().status()
+                    .log().body();
+    }
+
+    @Test
+    public void postPetIdUploadImage(){
+        RestAssured
+                .given()
+                    .baseUri(ApiConstants.BASE_URL)
+                    .pathParam("petId", 10)
+                    .queryParam("additionalMetadata", "any name for image")
+                    .multiPart("file", new File("C:\\Users\\Zenbook\\Pictures\\Screenshots\\Снимок экрана 2026-01-15 184800.png"))
+                .when()
+                    .post(Endpoints.PET_UPLOAD_IMAGE)
                 .then()
                     .statusCode(200)
                     .log().status()
