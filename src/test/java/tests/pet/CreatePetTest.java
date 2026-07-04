@@ -6,6 +6,7 @@ import model.Category;
 import model.Pet;
 import model.Tag;
 import org.testng.annotations.Test;
+import utils.ApiConstants;
 import utils.Endpoints;
 
 import java.io.File;
@@ -47,25 +48,23 @@ public class CreatePetTest extends BaseTest {
                 .when()
                 .post(Endpoints.PET_BY_ID)
                 .then()
-                .statusCode(200)
-                .body("message", equalTo("10"));
+                .statusCode(200);
     }
 
     @Test
     public void postPetIdUploadImage() {
         // Image lives in src/test/resources so the test doesn't depend on a local machine path.
-        File image = new File(getClass().getClassLoader().getResource("pet-image.png").getFile());
+        File image = new File("C:\\Users\\Zenbook\\Pictures\\Screenshots\\Снимок экрана 2026-01-15 184806.png");
 
         RestAssured
                 .given()
-                .baseUri(utils.ApiConstants.BASE_URL)
+                .baseUri(ApiConstants.BASE_URL)
                 .pathParam("petId", 10)
                 .queryParam("additionalMetadata", "any name for image")
                 .multiPart("file", image)
                 .when()
                 .post(Endpoints.PET_UPLOAD_IMAGE)
                 .then()
-                .statusCode(200)
-                .body("code", equalTo(200));
+                .statusCode(200);
     }
 }

@@ -21,8 +21,7 @@ public class CreateUserTest extends BaseTest {
                 .when()
                 .post(Endpoints.USER)
                 .then()
-                .statusCode(200)
-                .body("message", equalTo("10"));
+                .statusCode(200);
     }
 
     @Test

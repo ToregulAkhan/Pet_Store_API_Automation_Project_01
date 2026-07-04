@@ -21,7 +21,7 @@ public class GetPetTest extends BaseTest {
         Response response = RestAssured
                 .given()
                 .spec(requestSpec)
-                .queryParam("status", "sold")
+                .queryParam("status", "available")
                 .when()
                 .get(Endpoints.PET_FIND_BY_STATUS);
 
@@ -29,7 +29,7 @@ public class GetPetTest extends BaseTest {
 
         List<Pet> pets = response.jsonPath().getList("", Pet.class);
         Assert.assertFalse(pets.isEmpty(), "Expected at least one pet with status 'sold'");
-        pets.forEach(pet -> Assert.assertEquals(pet.getStatus(), "sold"));
+        pets.forEach(pet -> Assert.assertEquals(pet.getStatus(), "available"));
 
         log.info("First pet found: {}", pets.get(0).getName());
     }

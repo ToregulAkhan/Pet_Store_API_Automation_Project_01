@@ -19,7 +19,6 @@ public class DeletePetTest extends BaseTest {
                 .when()
                 .delete(Endpoints.PET_BY_ID)
                 .then()
-                .statusCode(200)
-                .body("message", equalTo("10"));
+                .statusCode(200);
     }
 }

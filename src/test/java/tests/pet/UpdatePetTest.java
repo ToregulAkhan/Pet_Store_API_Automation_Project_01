@@ -18,7 +18,7 @@ public class UpdatePetTest extends BaseTest {
     public void putPet() {
         Tag tag = new Tag(0, "string");
         Category category = new Category(1, "Dogs");
-        Pet pet = new Pet(10, "doggie updated", category, Arrays.asList("string"), Arrays.asList(tag), "sold");
+        Pet pet = new Pet(10, "doggie", category, Arrays.asList("string"), Arrays.asList(tag), "available");
 
         RestAssured
                 .given()
@@ -29,7 +29,7 @@ public class UpdatePetTest extends BaseTest {
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(10))
-                .body("name", equalTo("doggie updated"))
-                .body("status", equalTo("sold"));
+                .body("name", equalTo("doggie"))
+                .body("status", equalTo("available"));
     }
 }
