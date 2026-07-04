@@ -3,7 +3,7 @@
 Автоматизированные тесты для публичного API **Swagger Petstore**, написанные на **Java** с использованием **REST Assured** и **TestNG**.
 
 Проект покрывает три основных модуля API: `Pet`, `Store` и `User`, реализуя основные CRUD-операции и проверку ответов сервера.
- 
+
 ---
 
 ## 🚀 Стек технологий
@@ -15,8 +15,8 @@
 | **TestNG** | Запуск и организация тестов |
 | **Jackson (jackson-databind)** | Сериализация/десериализация JSON ↔ Java-объекты |
 | **Maven** | Управление зависимостями и сборка проекта |
-| **SLF4J** | Логирование |
- 
+| **SLF4J (slf4j-simple)** | Логирование в консоль |
+
 ---
 
 ## 📂 Структура проекта
@@ -25,7 +25,7 @@
 API_Automation_Project_01
 ├── src/test/java
 │   ├── base
-│   │   └── BaseTest.java
+│   │   └── BaseTest.java          # общая настройка RestAssured (baseUri, contentType, логирование)
 │   ├── model
 │   │   ├── Category.java
 │   │   ├── Order.java
@@ -49,13 +49,16 @@ API_Automation_Project_01
 │   │       ├── LoginTest.java
 │   │       ├── LogoutTest.java
 │   │       └── UpdateUserTest.java
+│   ├── resources
+│   │   └── pet-image.png          # тестовое изображение для uploadImage
 │   └── utils
 │       ├── ApiConstants.java
 │       └── Endpoints.java
 ├── testng.xml
-└── pom.xml
+├── pom.xml
+└── README.md
 ```
- 
+
 ---
 
 ## 🔗 Тестируемый API
@@ -66,7 +69,7 @@ https://virtserver.swaggerhub.com/sds-c05/Test_GCERT/1.0.0
 ```
 
 Используется мок-сервер SwaggerHub, эмулирующий стандартный Swagger Petstore API.
- 
+
 ---
 
 ## ✅ Покрытие тестами
@@ -100,7 +103,7 @@ https://virtserver.swaggerhub.com/sds-c05/Test_GCERT/1.0.0
 | DELETE | `/user/{username}` | `deleteUserName` — удаление пользователя |
 | GET | `/user/login` | `getUserLogin` — авторизация |
 | GET | `/user/logout` | `getUserLogout` — выход из системы |
- 
+
 ---
 
 ## ⚙️ Установка и запуск
@@ -116,7 +119,12 @@ cd API_Automation_Project_01
 mvn clean install
 ```
 
-### 3. Запустить тесты через `testng.xml`
+### 3. Запустить тесты
+`testng.xml` подключён в `maven-surefire-plugin`, поэтому достаточно:
+```bash
+mvn test
+```
+Либо явно указать suite-файл:
 ```bash
 mvn test -DsuiteXmlFile=testng.xml
 ```
@@ -125,24 +133,39 @@ mvn test -DsuiteXmlFile=testng.xml
 - **JDK 11+**
 - **Maven 3.8+**
 - Доступ в интернет (используется удалённый мок-сервер SwaggerHub)
+
 ---
 
 ## 🧩 Архитектура тестов
 
+- **base.BaseTest** — базовый класс, из которого наследуются все тестовые классы. В `@BeforeClass` строит единый `RequestSpecification` (base URI, content-type, логирование запроса/ответа), чтобы не дублировать эти настройки в каждом тесте.
 - **model** — POJO-классы (`Pet`, `Order`, `User`, `Category`, `Tag`) для маппинга JSON-ответов и тела запросов.
 - **utils** — константы (`ApiConstants`) и endpoint-пути (`Endpoints`), исключающие дублирование строк в тестах.
-- **base** — базовый класс `BaseTest`, точка расширения для общей настройки тестов (hooks, конфигурация RestAssured).
-- **tests** — тестовые классы, сгруппированные по доменам (`pet`, `store`, `user`), каждый метод проверяет отдельный сценарий работы с API.
+- **resources/pet-image.png** — тестовое изображение для `postPetIdUploadImage`, лежит внутри проекта, а не по абсолютному локальному пути.
+- **tests** — тестовые классы, сгруппированные по доменам (`pet`, `store`, `user`), каждый метод проверяет отдельный сценарий работы с API и содержит осмысленные ассерты (а не только проверку статус-кода).
+
+---
+
+## 🛠️ История исправлений
+
+- **Bugfix:** `UpdatePetTest.putPet()` вызывал `.post()` вместо `.put()` — метод не тестировал то, что заявлено в названии. Исправлено.
+- **Bugfix:** `postPetIdUploadImage` использовал абсолютный путь к файлу на локальной машине (`C:\Users\...`) — заменено на файл из `src/test/resources`.
+- **Refactor:** настройка `baseUri`/`contentType` вынесена из каждого теста в `BaseTest`.
+- **Refactor:** удалён закомментированный "мёртвый" код.
+- **Improvement:** добавлены проверки содержимого ответа (не только статус-код) в тестах `Pet`, `Store`, `User`.
+- **Improvement:** добавлена реализация SLF4J (`slf4j-simple`) — раньше логи никуда не писались, был только `slf4j-api`.
+- **Improvement:** `testng.xml` подключён напрямую в `maven-surefire-plugin`, убран абсолютный локальный путь из атрибута `name`.
+
 ---
 
 ## 📌 Возможные улучшения
 
-- [ ] Вынести общую настройку `RestAssured.baseURI` и `contentType` в `BaseTest` (через `@BeforeClass`/`@BeforeSuite`)
-- [ ] Добавить логирование запросов/ответов через `RequestLoggingFilter` / `ResponseLoggingFilter`
-- [ ] Параметризировать тестовые данные (DataProvider вместо хардкода)
 - [ ] Добавить негативные тест-кейсы (400/404/422)
+- [ ] Параметризировать тестовые данные (DataProvider вместо хардкода)
 - [ ] Подключить Allure для отчётности
-- [ ] Убрать абсолютные пути (например, путь к изображению в `postPetIdUploadImage`) — сделать относительными/ресурсными
+- [ ] Добавить CI (GitHub Actions) для автозапуска тестов на каждый push
+- [ ] Вынести тестовые данные в отдельные builder/factory классы
+
 ---
 
 ## 👤 Автор

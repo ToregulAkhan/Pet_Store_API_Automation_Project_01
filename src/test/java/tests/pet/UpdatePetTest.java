@@ -1,36 +1,35 @@
 package tests.pet;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import model.Category;
 import model.Pet;
 import model.Tag;
 import org.testng.annotations.Test;
-import utils.ApiConstants;
 import utils.Endpoints;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-public class UpdatePetTest {
+import static org.hamcrest.Matchers.equalTo;
+
+public class UpdatePetTest extends BaseTest {
 
     @Test
-    public void putPet(){
+    public void putPet() {
         Tag tag = new Tag(0, "string");
         Category category = new Category(1, "Dogs");
-        Pet pet = new Pet(10, "doggie", category, Arrays.asList("string"), Arrays.asList(tag), "available");
+        Pet pet = new Pet(10, "doggie updated", category, Arrays.asList("string"), Arrays.asList(tag), "sold");
 
         RestAssured
                 .given()
-                    .baseUri(ApiConstants.BASE_URL)
-                    .contentType(ApiConstants.CONTENT_TYPE)
-                    .body(pet)
+                .spec(requestSpec)
+                .body(pet)
                 .when()
-                    .post(Endpoints.PET)
+                .put(Endpoints.PET) // BUGFIX: was previously calling .post() by mistake
                 .then()
-                    .statusCode(200)
-                    .log().status()
-                    .log().body();
-
+                .statusCode(200)
+                .body("id", equalTo(10))
+                .body("name", equalTo("doggie updated"))
+                .body("status", equalTo("sold"));
     }
 }

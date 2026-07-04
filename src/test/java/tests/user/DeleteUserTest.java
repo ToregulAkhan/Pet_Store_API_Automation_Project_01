@@ -1,23 +1,21 @@
 package tests.user;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
 import org.testng.annotations.Test;
-import utils.ApiConstants;
 import utils.Endpoints;
 
-public class DeleteUserTest {
+public class DeleteUserTest extends BaseTest {
 
     @Test
-    public void deleteUserName(){
+    public void deleteUserName() {
         RestAssured
                 .given()
-                .baseUri(ApiConstants.BASE_URL)
-                .contentType(ApiConstants.CONTENT_TYPE)
+                .spec(requestSpec)
                 .pathParam("username", "theUser")
                 .when()
                 .delete(Endpoints.USER_BY_NAME)
-                .then().statusCode(200)
-                .log().status()
-                .log().body();
+                .then()
+                .statusCode(200);
     }
 }

@@ -1,27 +1,27 @@
 package tests.user;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import model.User;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.ApiConstants;
 import utils.Endpoints;
 
-public class GetUserTest {
+public class GetUserTest extends BaseTest {
 
     @Test
-    public void getUserName(){
+    public void getUserName() {
         Response response = RestAssured
                 .given()
-                .baseUri(ApiConstants.BASE_URL)
-                .contentType(ApiConstants.CONTENT_TYPE)
+                .spec(requestSpec)
                 .pathParam("username", "theUser")
                 .when()
                 .get(Endpoints.USER_BY_NAME);
 
+        response.then().statusCode(200);
+
         User user = response.jsonPath().getObject("$", User.class);
-        response.then().statusCode(200)
-                .log().status()
-                .log().body();
+        Assert.assertEquals(user.getUsername(), "theUser");
     }
 }

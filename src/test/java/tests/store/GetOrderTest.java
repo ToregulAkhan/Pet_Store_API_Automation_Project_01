@@ -1,47 +1,44 @@
 package tests.store;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import model.Order;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.ApiConstants;
 import utils.Endpoints;
 
-import java.sql.ResultSet;
 import java.util.Map;
 
-public class GetOrderTest {
+public class GetOrderTest extends BaseTest {
 
     @Test
-    public void getStoreOrderId(){
+    public void getStoreOrderId() {
         Response response = RestAssured
                 .given()
-                .baseUri(ApiConstants.BASE_URL)
-                .contentType(ApiConstants.CONTENT_TYPE)
+                .spec(requestSpec)
                 .pathParam("orderId", 10)
                 .when()
                 .get(Endpoints.STORE_ORDER_BY_ID);
 
+        response.then().statusCode(200);
+
         Order order = response.jsonPath().getObject("", Order.class);
-        System.out.println("id: " + order.getId());
-        System.out.println("petID: " + order.getPetId());
-        System.out.println("quantity: " + order.getQuantity());
-        System.out.println("shipDate: " + order.getShipDate());
-        System.out.println("status: " + order.getStatus());
-        System.out.println("complete: " + order.getComplete());
+        Assert.assertEquals(order.getId(), 10);
+        Assert.assertNotNull(order.getStatus());
     }
 
     @Test
-    public void getStoreInventory(){
+    public void getStoreInventory() {
         Response response = RestAssured
                 .given()
-                .baseUri(ApiConstants.BASE_URL)
-                .contentType(ApiConstants.CONTENT_TYPE)
+                .spec(requestSpec)
                 .when()
                 .get(Endpoints.STORE_INVENTORY);
 
+        response.then().statusCode(200);
+
         Map<String, Integer> inventory = response.jsonPath().getMap("");
-        System.out.println(inventory);
+        Assert.assertFalse(inventory.isEmpty(), "Inventory response should not be empty");
     }
 }

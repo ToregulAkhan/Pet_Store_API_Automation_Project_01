@@ -1,22 +1,20 @@
 package tests.user;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
 import org.testng.annotations.Test;
-import utils.ApiConstants;
 import utils.Endpoints;
 
-public class LogoutTest {
+public class LogoutTest extends BaseTest {
 
     @Test
-    public void getUserLogout(){
+    public void getUserLogout() {
         RestAssured
                 .given()
-                .baseUri(ApiConstants.BASE_URL)
-                .contentType(ApiConstants.CONTENT_TYPE)
+                .spec(requestSpec)
                 .when()
                 .get(Endpoints.USER_LOGOUT)
-                .then().statusCode(200)
-                .log().status()
-                .log().body();
+                .then()
+                .statusCode(200);
     }
 }
