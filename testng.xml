@@ -1,2 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="All Test Suite"><test verbose="2" preserve-order="true" name="C:/Users/Zenbook/Desktop/ITJE java projects/API_Automation_Project_01"><classes><class name="tests.pet.CreatePetTest"><methods><include name="postPet"/><include name="postPetId"/><include name="postPetIdUploadImage"/></methods></class><class name="tests.pet.DeletePetTest"><methods><include name="deletePetId"/></methods></class><class name="tests.pet.GetPetTest"><methods><include name="getFindByStatus"/><include name="getFindByTags"/><include name="getPetById"/></methods></class><class name="tests.pet.UpdatePetTest"><methods><include name="putPet"/></methods></class><class name="tests.store.CreateOrderTest"><methods><include name="postStoreOrder"/></methods></class><class name="tests.store.DeleteOrderTest"><methods><include name="deleteStoreOrderId"/></methods></class><class name="tests.store.GetOrderTest"><methods><include name="getStoreOrderId"/><include name="getStoreInventory"/></methods></class><class name="tests.user.CreateUserTest"><methods><include name="postUser"/></methods></class></classes></test></suite>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true"
+          name="C:/Users/Zenbook/Desktop/ITJE java projects/API_Automation_Project_01">
+        <classes>
+            <class name="tests.pet.CreatePetTest">
+                <methods>
+                    <include name="postPet"/>
+                    <include name="postPetId"/>
+                    <include name="postPetIdUploadImage"/>
+                </methods>
+            </class>
+            <class name="tests.pet.DeletePetTest">
+                <methods>
+                    <include name="deletePetId"/>
+                </methods>
+            </class>
+            <class name="tests.pet.GetPetTest">
+                <methods>
+                    <include name="getFindByStatus"/>
+                    <include name="getFindByTags"/>
+                    <include name="getPetById"/>
+                </methods>
+            </class>
+            <class name="tests.pet.UpdatePetTest">
+                <methods>
+                    <include name="putPet"/>
+                </methods>
+            </class>
+
+            <class name="tests.store.CreateOrderTest">
+                <methods>
+                    <include name="postStoreOrder"/>
+                </methods>
+            </class>
+            <class name="tests.store.DeleteOrderTest">
+                <methods>
+                    <include name="deleteStoreOrderId"/>
+                </methods>
+            </class>
+            <class name="tests.store.GetOrderTest">
+                <methods>
+                    <include name="getStoreOrderId"/>
+                    <include name="getStoreInventory"/>
+                </methods>
+            </class>
+
+            <class name="tests.user.CreateUserTest">
+                <methods>
+                    <include name="postUser"/>
+                </methods>
+            </class>
+            <class name="tests.user.DeleteUserTest">
+                <methods>
+                    <include name="deleteUserName"/>
+                </methods>
+            </class>
+            <class name="tests.user.GetUserTest">
+                <methods>
+                    <include name="getUserName"/>
+                </methods>
+            </class>
+            <class name="tests.user.LoginTest">
+                <methods>
+                    <include name="getUserLogin"/>
+                </methods>
+            </class>
+            <class name="tests.user.LogoutTest">
+                <methods>
+                    <include name="getUserLogout"/>
+                </methods>
+            </class>
+            <class name="tests.user.UpdateUserTest">
+                <methods>
+                    <include name="putUserName"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
